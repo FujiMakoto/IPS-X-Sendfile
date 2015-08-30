@@ -42,7 +42,10 @@ class hook286 extends _HOOK_CLASS_
 		elseif ( $server == 'nginx' )
 		{
 			\IPS\Output::i()->sendHeader( 'X-Accel-Redirect: ' .
-				$path = '/' . \IPS\Settings::i()->xsendfile_internal_uri . '/' . $file->container . '/' . $file->filename
+				$path = '/' . \IPS\Settings::i()->xsendfile_custom_uri
+					? \IPS\Settings::i()->xsendfile_internal_uri
+					: $file->configuration['url']
+					. '/' . $file->container . '/' . $file->filename
 			);
 
 			/* Throttling is only supported with Nginx */
@@ -64,12 +67,16 @@ class hook286 extends _HOOK_CLASS_
 		}
 
 		/* Additional debug headers */
+		$filename = $file->originalFilename;
 		if ( \IPS\Settings::i()->xsendfile_debug_headers )
+		{
 			\IPS\Output::i()->sendHeader( 'X-Sendfile-Debug-Path: ' . $path );
+			$filename = 'xsendfile_debug_success.' . pathinfo( $filename, PATHINFO_EXTENSION );
+		}
 
 		/* Generic file headers */
 		\IPS\Output::i()->sendHeader( 'Content-Type: ' . \IPS\File::getMimeType( $file->originalFilename ) );
-		\IPS\Output::i()->sendHeader( 'Content-Disposition: ' . \IPS\Output::getContentDisposition( 'attachment', $file->originalFilename ) );
+		\IPS\Output::i()->sendHeader( 'Content-Disposition: ' . \IPS\Output::getContentDisposition( 'attachment', $filename ) );
 		\IPS\Output::i()->sendHeader( "Content-Length: " . $file->filesize() );
 	}
 

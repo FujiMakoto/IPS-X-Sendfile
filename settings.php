@@ -15,10 +15,14 @@ if ( preg_match( '/^apache/i', $_SERVER['SERVER_SOFTWARE'] ) ) {
 
 $form->addHeader( 'xsendfile_header_general' );  // Settings above headers look bad if they don't have their own
 $form->add( new \IPS\Helpers\Form\YesNo( 'xsendfile_enable', \IPS\Settings::i()->xsendfile_enable, false,
-	array( 'togglesOn' => array(
-		'form_xsendfile_server',
-		'form_header_xsendfile_header_server'
-	))
+	array(
+		'togglesOn' => array(
+			'form_xsendfile_server',
+			'form_header_xsendfile_header_server',
+			'form_xsendfile_custom_uri',
+			'form_xsendfile_internal_uri'
+		)
+	)
 ));
 $form->add( new \IPS\Helpers\Form\YesNo( 'xsendfile_debug_headers', \IPS\Settings::i()->xsendfile_debug_headers ) );
 
@@ -28,8 +32,15 @@ $form->add( new \IPS\Helpers\Form\Select( 'xsendfile_server', \IPS\Settings::i()
 		'options' => $servers,
 		'toggles' => array(
 			'nginx' => array(
-				'form_xsendfile_internal_uri'
+				'form_xsendfile_custom_uri',
 			)
+		)
+	)
+));
+$form->add( new \IPS\Helpers\Form\YesNo( 'xsendfile_custom_uri', \IPS\Settings::i()->xsendfile_custom_uri, false,
+	array(
+		'togglesOn' => array(
+			'form_xsendfile_internal_uri'
 		)
 	)
 ));

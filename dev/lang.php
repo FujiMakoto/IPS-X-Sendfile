@@ -16,6 +16,7 @@ $lang = array(
 	'xsendfile_server'          => 'Web server',
 
 	# (Nginx) Server Settings
+	'xsendfile_custom_uri'          => 'Custom URI',
 	'xsendfile_internal_uri'        => 'Internal URI',
 	'xsendfile_internal_uri_desc'   => 'For help setting this up, refer to the <a href="http://wiki.nginx.org/XSendfile" target="_blank">Nginx wiki</a>',
 

@@ -42,9 +42,9 @@ class hook286 extends _HOOK_CLASS_
 		elseif ( $server == 'nginx' )
 		{
 			\IPS\Output::i()->sendHeader( 'X-Accel-Redirect: ' .
-				$path = '/' . \IPS\Settings::i()->xsendfile_custom_uri
+				$path = '/' . ( \IPS\Settings::i()->xsendfile_custom_uri
 					? \IPS\Settings::i()->xsendfile_internal_uri
-					: $file->configuration['url']
+					: $file->configuration['url'] )
 					. '/' . $file->container . '/' . $file->filename
 			);
 

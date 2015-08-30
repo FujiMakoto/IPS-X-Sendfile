@@ -12,6 +12,14 @@ class hook286 extends _HOOK_CLASS_
 	 */
 	public function __construct( $file, $throttle=0 )
 	{
+		/* Should we send debug headers? */
+		if ( \IPS\Settings::i()->xsendfile_debug_headers )
+		{
+			\IPS\Output::i()->sendHeader( 'X-Sendfile-Debug-Enabled: ' . (int) \IPS\Settings::i()->xsendfile_enable );
+			\IPS\Output::i()->sendHeader( 'X-Sendfile-Debug-Server: ' . \IPS\Settings::i()->xsendfile_server );
+			\IPS\Output::i()->sendHeader( 'X-Sendfile-Debug-Class: ' . get_class( $file ) );
+		}
+
 		/* If X-Sendfile is disabled / we haven't set it up yet, process a normal Range request instead */
 		if ( !\IPS\Settings::i()->xsendfile_enable or !$server = \IPS\Settings::i()->xsendfile_server )
 		{
@@ -28,13 +36,13 @@ class hook286 extends _HOOK_CLASS_
 		if ( $server == 'apache' )
 		{
 			\IPS\Output::i()->sendHeader( 'X-Sendfile: ' .
-				$file->configuration['dir'] . '/' . $file->container . '/' . $file->filename
+				$path = $file->configuration['dir'] . '/' . $file->container . '/' . $file->filename
 			);
 		}
 		elseif ( $server == 'nginx' )
 		{
 			\IPS\Output::i()->sendHeader( 'X-Accel-Redirect: ' .
-				'/' . \IPS\Settings::i()->xsendfile_internal_uri . '/' . $file->container . '/' . $file->namename
+				$path = '/' . \IPS\Settings::i()->xsendfile_internal_uri . '/' . $file->container . '/' . $file->namename
 			);
 
 			/* Throttling is only supported with Nginx */
@@ -46,7 +54,7 @@ class hook286 extends _HOOK_CLASS_
 		elseif ( $server == 'lighttpd' )
 		{
 			\IPS\Output::i()->sendHeader( 'X-LIGHTTPD-send-file: ' .
-				$file->configuration['dir'] . '/' . $file->container . '/' . $file->filename
+				$path = $file->configuration['dir'] . '/' . $file->container . '/' . $file->filename
 			);
 		}
 		else
@@ -54,6 +62,10 @@ class hook286 extends _HOOK_CLASS_
 			/* What in the world have you done if you reached this point? */
 			throw new \Whoops\Exception\ErrorException( 'Unrecognized X-Sendfile server' );
 		}
+
+		/* Additional debug headers */
+		if ( \IPS\Settings::i()->xsendfile_debug_headers )
+			\IPS\Output::i()->sendHeader( 'X-Sendfile-Debug-Path: ' . $path );
 
 		/* Generic file headers */
 		\IPS\Output::i()->sendHeader( 'Content-Type: ' . \IPS\File::getMimeType( $file->originalFilename ) );

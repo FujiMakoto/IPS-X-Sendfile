@@ -1,1 +1,1 @@
-[{"key":"xsendfile_enable","default":"0"},{"key":"xsendfile_server","default":""},{"key":"xsendfile_internal_uri","default":"protected"}]
+[{"key":"xsendfile_enable","default":"0"},{"key":"xsendfile_server","default":""},{"key":"xsendfile_internal_uri","default":"protected"},{"key":"xsendfile_debug_headers","default":"0"}]

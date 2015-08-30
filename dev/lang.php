@@ -6,8 +6,10 @@ $lang = array(
 	 * Settings
 	 */
 	# General Settings
-	'xsendfile_header_general'  => 'General Settings',
-	'xsendfile_enable'          => 'Enable X-Sendfile',
+	'xsendfile_header_general'      => 'General Settings',
+	'xsendfile_enable'              => 'Enable X-Sendfile',
+	'xsendfile_debug_headers'       => 'Enable Debug Headers',
+	'xsendfile_debug_headers_desc'  => 'Do not enable in production. <strong>This should only be used during offline testing.</strong>',
 
 	# Server Settings
 	'xsendfile_header_server'   => 'Server Settings',

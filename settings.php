@@ -20,6 +20,7 @@ $form->add( new \IPS\Helpers\Form\YesNo( 'xsendfile_enable', \IPS\Settings::i()-
 		'form_header_xsendfile_header_server'
 	))
 ));
+$form->add( new \IPS\Helpers\Form\YesNo( 'xsendfile_debug_headers', \IPS\Settings::i()->xsendfile_debug_headers ) );
 
 $form->addHeader( 'xsendfile_header_server' );
 $form->add( new \IPS\Helpers\Form\Select( 'xsendfile_server', \IPS\Settings::i()->xsendfile_server ?: $serverSoftware,

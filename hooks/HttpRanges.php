@@ -7,6 +7,8 @@ class hook286 extends _HOOK_CLASS_
 	 *
 	 * @param    \IPS\File $file     File object we are sending
 	 * @param    int       $throttle Throttle speed (kb/sec)
+	 *
+	 * @throws \Whoops\Exception\ErrorException
 	 */
 	public function __construct( $file, $throttle=0 )
 	{
@@ -29,7 +31,34 @@ class hook286 extends _HOOK_CLASS_
 				$file->configuration['dir'] . '/' . $file->container . '/' . $file->filename
 			);
 		}
+		elseif ( $server == 'nginx' )
+		{
+			\IPS\Output::i()->sendHeader( 'X-Accel-Redirect: ' .
+				'/' . \IPS\Settings::i()->xsendfile_internal_uri . '/' . $file->container . '/' . $file->namename
+			);
 
+			/* Throttling is only supported with Nginx */
+			if ( $throttle )
+			{
+				\IPS\Output::i()->sendHeader( 'X-Accel-Limit-Rate: ' . $throttle * 1000 );  // Throttle is in bytes
+			}
+		}
+		elseif ( $server == 'lighttpd' )
+		{
+			\IPS\Output::i()->sendHeader( 'X-LIGHTTPD-send-file: ' .
+				$file->configuration['dir'] . '/' . $file->container . '/' . $file->filename
+			);
+		}
+		else
+		{
+			/* What in the world have you done if you reached this point? */
+			throw new \Whoops\Exception\ErrorException( 'Unrecognized X-Sendfile server' );
+		}
+
+		/* Generic file headers */
+		\IPS\Output::i()->sendHeader( 'Content-Type: ' . \IPS\File::getMimeType( $file->originalFilename ) );
+		\IPS\Output::i()->sendHeader( 'Content-Disposition: ' . \IPS\Output::getContentDisposition( 'attachment', $file->originalFilename ) );
+		\IPS\Output::i()->sendHeader( "Content-Length: " . $file->filesize() );
 	}
 
 }

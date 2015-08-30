@@ -42,7 +42,7 @@ class hook286 extends _HOOK_CLASS_
 		elseif ( $server == 'nginx' )
 		{
 			\IPS\Output::i()->sendHeader( 'X-Accel-Redirect: ' .
-				$path = '/' . \IPS\Settings::i()->xsendfile_internal_uri . '/' . $file->container . '/' . $file->namename
+				$path = '/' . \IPS\Settings::i()->xsendfile_internal_uri . '/' . $file->container . '/' . $file->filename
 			);
 
 			/* Throttling is only supported with Nginx */

@@ -12,6 +12,12 @@ class hook286 extends _HOOK_CLASS_
 	 */
 	public function __construct( $file, $throttle=0 )
 	{
+		/* If X-Sendfile is disabled / we haven't set it up yet, process a normal filesystem request instead */
+		if ( !\IPS\Settings::i()->xsendfile_enable or !$server = \IPS\Settings::i()->xsendfile_server )
+		{
+			return call_user_func_array( 'parent::__construct', func_get_args() );
+		}
+
 		/* Generic file headers */
 		\IPS\Output::i()->sendHeader( 'Content-Disposition: ' .
 			\IPS\Output::getContentDisposition( 'attachment', $file->originalFilename )

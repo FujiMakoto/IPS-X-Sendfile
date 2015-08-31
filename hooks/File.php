@@ -38,10 +38,7 @@ class hook287 extends _HOOK_CLASS_
 		elseif ( $server == 'nginx' )
 		{
 			\IPS\Output::i()->sendHeader( 'X-Accel-Redirect: ' .
-				$path = '/' . ( \IPS\Settings::i()->xsendfile_custom_uri
-					? \IPS\Settings::i()->xsendfile_internal_uri
-					: $this->configuration['url'] )
-					. '/' . $this->container . '/' . $this->filename
+				$path = '/' . $this->configuration['url'] . '/' . $this->container . '/' . $this->filename
 			);
 
 			/* Throttling is only supported with Nginx */
@@ -73,7 +70,6 @@ class hook287 extends _HOOK_CLASS_
 
 		/* Generic file headers */
 		\IPS\Output::i()->sendHeader( 'Content-Type: ' . \IPS\File::getMimeType( $this->originalFilename ) );
-		// \IPS\Output::i()->sendHeader( "Content-Length: " . $this->filesize() );
 	}
 
 }

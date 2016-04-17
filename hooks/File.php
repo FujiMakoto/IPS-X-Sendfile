@@ -1,6 +1,6 @@
 //<?php
 
-class hook287 extends _HOOK_CLASS_
+class hook16 extends _HOOK_CLASS_
 {
 
 	/**
@@ -56,7 +56,7 @@ class hook287 extends _HOOK_CLASS_
 		else
 		{
 			/* What in the world have you done if you reached this point? */
-			throw new \Whoops\Exception\ErrorException( 'Unrecognized X-Sendfile server' );
+			throw new \RuntimeException( 'Unrecognized X-Sendfile server' );
 		}
 
 		/* Additional debug headers */
